@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-import cryptography
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from icecream import ic
@@ -35,6 +34,7 @@ class CreateKeyDTO(BaseModel):
 
 class GetKeyDTO(BaseModel):
     secret: str
+
 @app.post('/key')
 def create_key(dto: CreateKeyDTO):
     private_key = rsa.generate_private_key(
