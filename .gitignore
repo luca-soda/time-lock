@@ -1,0 +1,11 @@
+bin/
+include/
+lib/
+share/
+__pycache__/
+.env
+chromedriver
+pyvenv.cfg
+*.pth
+.DS_Store
+.vscode/
