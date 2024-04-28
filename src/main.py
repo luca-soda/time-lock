@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import key_handler 
 
-app = FastAPI()
+app = FastAPI(title="Time Lock", version="0.0.1", description="A time lock service that allows you to create a key that can only be retrieved after a certain date.")
 
 class CreateKeyDTO(BaseModel):
     release_date: int
