@@ -56,9 +56,7 @@ def create_key(dto: CreateKeyDTO):
 @app.post('/key/{uuid}')
 def get_key(uuid: str, secret: GetKeyDTO):
     key_entry = find_key_entry(uuid)
-    if key_entry is None:
-        raise HTTPException(status_code=404, detail='Key not found')
-    if time() < key_entry['release_date']:
+    if key_entry is None or time() < key_entry['release_date']:
         raise HTTPException(status_code=400, detail='Too soon to release key')
     data = {'required_shares': 2, 'prime_mod': key_entry['prime'], 'shares': [key_entry['secret'], secret.secret]}
     return {'private_key': shamir.recover_secret(shamir.from_hex(data)).decode('utf-8')}
