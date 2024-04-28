@@ -31,7 +31,7 @@ def create_key(release_date: int) -> dict:
         uuid = uuid4().__str__()
     bytes_private_key = private_key.private_bytes(encoding=serialization.Encoding.PEM, format=serialization.PrivateFormat.PKCS8, encryption_algorithm=serialization.NoEncryption())
     secrets = shamir.to_hex(shamir.split_secret(bytes_private_key, 2, 2))
-    hex_public_key = private_key.public_key().public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.PKCS1).hex()
+    hex_public_key = private_key.public_key().public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.PKCS1)
     add_key_entry(release_date, uuid, secrets['shares'][1], secrets['prime_mod'])
     return {'public_key': hex_public_key, 
             'secret': secrets['shares'][0],
