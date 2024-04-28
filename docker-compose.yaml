@@ -11,3 +11,15 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      KEY_SIZE: ${KEY_SIZE}
+      CONNECTION_STRING: ${CONNECTION_STRING}
+    ports:
+      - "${PORT}:8000"
+    depends_on:
+      - postgres
+    
