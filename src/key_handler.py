@@ -30,7 +30,7 @@ def create_key(release_date: int) -> dict:
     while (find_key_entry(uuid) is not None):
         uuid = uuid4().__str__()
     bytes_private_key = private_key.private_bytes(encoding=serialization.Encoding.PEM, format=serialization.PrivateFormat.PKCS8, encryption_algorithm=serialization.NoEncryption())
-    secrets = shamir.to_hex(shamir.split_secret(bytes_private_key, 2, 2))
+    secrets = shamir.to_base64(shamir.split_secret(bytes_private_key, 2, 2))
     hex_public_key = private_key.public_key().public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.PKCS1)
     add_key_entry(release_date, uuid, secrets['shares'][1], secrets['prime_mod'])
     return {'public_key': hex_public_key, 
@@ -42,4 +42,4 @@ def get_key(uuid: str, secret: str) -> dict:
     if key_entry is None or time() < key_entry['release_date']:
         raise Exception('Too soon to release key')
     data = {'required_shares': 2, 'prime_mod': key_entry['prime'], 'shares': [key_entry['secret'], secret]}
-    return {'private_key': shamir.recover_secret(shamir.from_hex(data)).decode('utf-8')}
+    return {'private_key': shamir.recover_secret(shamir.from_base64(data)).decode('utf-8')}
